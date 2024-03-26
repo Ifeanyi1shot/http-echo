@@ -1,41 +1,53 @@
-This documentation outlines the steps for deploying a containerized application using Terraform as the Infrastructure as Code (IAC) tool on Azure Web Services. The deployment process prioritizes cost-effectiveness and leverages Azure Pipelines for Continuous Integration/Continuous Deployment (CI/CD).
+# Containerized Application Deployment Documentation
 
-1. Setting Up Azure Environment
+## Overview
+This documentation outlines the process of creating a containerized application using Terraform for Infrastructure as Code (IaC) deployment on Azure Web Services. The deployment process is optimized for cost-effectiveness and utilizes Azure Pipelines for Continuous Integration/Continuous Deployment (CI/CD).
 
-Before utilizing Terraform for provisioning, ensure access to an Azure subscription with appropriate permissions. The application will be deployed on Azure Web App Service for Containers due to its cost-effectiveness, scalability, and managed infrastructure.
+### Prerequisites
+1. Terraform
+2. Azure DevOps Pipeline
+3. Active Azure cloud subscription
+4. Docker account with access to the image
 
-2. Containerizing the Application
+## 1. Setting Up Azure Environment
+Before starting with Terraform as the IaC provisioner, ensure an Azure subscription and the necessary permissions to create resources. Deploy the application to Azure Web App Service for Container due to its cost-effectiveness, scalability, and managed infrastructure.
 
-Utilize the existing Dockerfile for containerization, with an option to work directly with the image from the Docker registry. Further explanation on integrating this into the Terraform file will be provided.
+## 2. Containerizing the Application
+Utilize the existing Dockerfile for containerization. Work directly with the image from the Docker registry.
 
-3. Infrastructure as Code with Terraform
+## 3. Infrastructure as Code with Terraform
+### Installation
+Install Terraform on your local machine.
 
-Begin by installing Terraform on your local machine and creating a main.tf file. This file, using the Azurerm provider for Azure cloud, will include:
+### Configuration
+Create a `main.tf` file with:
+- Resource group
+- App Service for Container
+- Storage account for state file
+- App Service plan
+- Docker login credentials and Docker image
 
-i. Definition of the Azure resource group
-ii. Configuration for the App Service for Containers
-iii. Setup for the storage account to store the state file
-iv. Configuration for the App Service plan
-v. Docker login credentials and Docker image information
+### Commands
+1. `terraform init` - Initialize Terraform in the project directory.
+2. `terraform plan` - Review changes in the Terraform file.
+3. `terraform apply` - Apply configuration to provision resources on Azure.
 
-After specifying the necessary information in the Terraform file, execute the following commands:
+## 4. CI/CD with Azure Pipelines
+### Setting Up Azure Pipelines
+#### Classic Editor
+Set up a CI/CD pipeline using the classic editor in Azure DevOps. Configure the pipeline to trigger on the main branch. The pipeline should build, check for code issues, scan for security, and deploy the application using the Terraform file to create the app service.
 
-i. terraform init (Initialize Terraform in the project directory)
-ii. terraform plan (Review any changes in the Terraform file)
-iii. terraform apply (Apply the configuration to provision resources on Azure)
+#### Pipeline YAML Configuration
+Alternatively, configure the pipeline using a YAML file for version control, collaboration, and defining pipelines as code. An example YAML file (`echo.yaml`) is provided in the working directory.
 
-4. CI/CD with Azure Pipelines
+**Note:** The pipeline deploys to staging initially. Approval is required to promote the application to production.
 
-Set up a CI/CD pipeline in Azure Pipelines using either:
+## 5. Logging and Metric Platforms
+Integrate logging and metric platforms into the application architecture for monitoring and optimization. Utilize Azure Application Insights for comprehensive application performance monitoring, including monitoring, performance tracking, alerts, and usage analytics.
 
-i. Classic Editor: Utilize the graphical user interface (GUI) to create and configure pipelines without directly manipulating YAML files. The pipeline should trigger on the main branch, conducting code checks, security scans, running the Terraform file to create the App Service, and deploying the application.
+### Other Logging Platforms
+Apart from Azure Application Insights, consider other logging platforms available in Azure, such as Azure Monitor, Azure Log Analytics, Azure Sentinel, or third-party logging services.
 
-ii. YAML Configuration: Employ YAML configuration for defining pipelines as code. An echo.yaml file is provided in the working directory, specifying the triggered branch, variables, steps, and tasks to check code, security, run Terraform, and deploy the application.
+## References
+[Provide relevant references here]
 
-Note: The pipeline includes staging and production App Services created by Terraform. Deployment to production requires approval.
-
-5. Logging and Metric Platforms
-
-Integrate Azure Application Insights for monitoring, troubleshooting, and optimizing application performance. Azure Application Insights provides comprehensive application performance monitoring (APM), enabling real-time monitoring, performance tracking, alerts, usage analytics, and dependency tracking.
-
-Additionally, Azure offers other logging platforms such as Azure Monitor, Azure Log Analytics, Azure Sentinel, and third-party logging services for comprehensive logging and monitoring needs.

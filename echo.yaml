@@ -1,0 +1,63 @@
+trigger:
+- main
+
+pool:
+  vmImage: ubuntu-latest
+
+variables:
+  azureSubscription: #your azure subscription
+  backendServiceArm: '$(azureSubscription)'
+  backendAzureRmResourceGroupName: #your resource group
+  backendAzureRmStorageAccountName: #storage account name
+  backendAzureRmContainerName: #your container name
+  backendAzureRmKey: 'terraform.tfstate'
+
+steps:
+- task: BuildQualityChecks.QualityChecks
+  displayName: 'Check build quality'
+
+- task: MicrosoftSecurityDevOps@1
+  displayName: 'Run Microsoft Defender for DevOps'
+  inputs:
+    command: run
+
+- task: TerraformInstaller@2
+  displayName: 'Use Terraform latest'
+
+- task: TerraformTaskV4@4
+  displayName: 'Terraform : init'
+  inputs:
+    backendServiceArm: '$(backendServiceArm)'
+    backendAzureRmResourceGroupName: '$(backendAzureRmResourceGroupName)'
+    backendAzureRmStorageAccountName: '$(backendAzureRmStorageAccountName)'
+    backendAzureRmContainerName: '$(backendAzureRmContainerName)'
+    backendAzureRmKey: '$(backendAzureRmKey)'
+
+- task: TerraformTaskV4@4
+  displayName: 'Terraform : plan'
+  inputs:
+    command: plan
+    environmentServiceNameAzureRM: '$(azureSubscription)'
+    backendServiceArm: '$(backendServiceArm)'
+    backendAzureRmResourceGroupName: '$(backendAzureRmResourceGroupName)'
+    backendAzureRmStorageAccountName: '$(backendAzureRmStorageAccountName)'
+    backendAzureRmContainerName: '$(backendAzureRmContainerName)'
+    backendAzureRmKey: '$(backendAzureRmKey)'
+
+- task: TerraformTaskV4@4
+  displayName: 'Terraform : apply'
+  inputs:
+    command: apply
+    environmentServiceNameAzureRM: '$(azureSubscription)'
+    backendServiceArm: '$(backendServiceArm)'
+    backendAzureRmResourceGroupName: '$(backendAzureRmResourceGroupName)'
+    backendAzureRmStorageAccountName: '$(backendAzureRmStorageAccountName)'
+    backendAzureRmContainerName: '$(backendAzureRmContainerName)'
+    backendAzureRmKey: '$(backendAzureRmKey)'
+
+- task: AzureWebAppContainer@1
+  displayName: 'Azure Web App on Container staging: httpecho-demo'
+  inputs:
+    azureSubscription: '$(azureSubscription)'
+    appName: 'httpecho-demo'
+    containers: 'hashicorp/http-echo:latest'

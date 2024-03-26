@@ -30,7 +30,7 @@ Set up a CI/CD pipeline in Azure Pipelines using either:
 
 i. Classic Editor: Utilize the graphical user interface (GUI) to create and configure pipelines without directly manipulating YAML files. The pipeline should trigger on the main branch, conducting code checks, security scans, running the Terraform file to create the App Service, and deploying the application.
 
-ii. YAML Configuration: Employ YAML configuration for defining pipelines as code. An echo.yaml file is provided in the working directory, specifying the triggered branch, variables, steps, and tasks to check code, and security, run Terraform, and deploy the application.
+ii. YAML Configuration: Employ YAML configuration for defining pipelines as code. An echo.yaml file is provided in the working directory, specifying the triggered branch, variables, steps, and tasks to check code, security, run Terraform, and deploy the application.
 
 Note: The pipeline includes staging and production App Services created by Terraform. Deployment to production requires approval.
 

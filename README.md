@@ -49,5 +49,8 @@ Integrate logging and metric platforms into the application architecture for mon
 Apart from Azure Application Insights, consider other logging platforms available in Azure, such as Azure Monitor, Azure Log Analytics, Azure Sentinel, or third-party logging services.
 
 ## References
-[Provide relevant references here]
+https://learn.microsoft.com/en-us/azure/defender-for-cloud/azure-devops-extension
+https://registry.terraform.io/modules/Azure/container-apps/azure/latest
+https://hub.docker.com/r/hashicorp/http-echo/
+
 
